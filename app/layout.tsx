@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
+import Nav from "../components/Nav";
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_SITE_NAME || "Next.js Starter",
