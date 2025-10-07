@@ -1,25 +1,15 @@
-import { headers } from "next/headers";
+import { getHelloData } from "@/lib/hello";
 
 export const dynamic = "force-dynamic";
 
-function getBaseUrl() {
-  const h = headers();
-  const proto = h.get("x-forwarded-proto") ?? "https";
-  const host  = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
-  return `${proto}://${host}`;
-}
-
-async function getHelloSafe() {
-  const base = getBaseUrl();                       // ← absolut
-  const url  = new URL("/api/hello", base).toString();
-  const res  = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`GET ${url} -> ${res.status}`);
-  return res.json();
-}
-
-export default async function Home() {
-  const data = await getHelloSafe();
+export default function Home() {
+  const data = getHelloData(); // langsung, aman dari 401/URL error
   return (
-    <pre>{JSON.stringify(data, null, 2)}</pre>
+    <section className="space-y-6">
+      <h1 className="text-3xl font-bold">Next.js Starter (Safe)</h1>
+      <pre className="rounded-lg border p-4 text-sm overflow-x-auto">
+        {JSON.stringify(data, null, 2)}
+      </pre>
+    </section>
   );
 }
